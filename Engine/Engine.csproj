@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="resources\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="resources\Laser3.wav" />
+      <None Remove="resources\Template\texture_atlastexture.frag" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ImGui.NET" Version="1.90.1.1" />
+        <PackageReference Include="OpenTK" Version="4.8.2" />
+        <PackageReference Include="StbImageSharp" Version="2.27.13" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="bin\Debug\net6.0\" />
+      <Folder Include="resources\Buttons\" />
+      <Folder Include="resources\Canon\" />
+      <Folder Include="resources\Explosion\" />
+      <Folder Include="resources\Machinegun\" />
+      <Folder Include="resources\PercentageBar\" />
+      <Folder Include="resources\Player\" />
+    </ItemGroup>
+
+</Project>

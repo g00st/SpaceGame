@@ -1,0 +1,43 @@
+﻿#version 430 core
+layout(local_size_x = 1) in; // Set the local workgroup size to 1
+uniform vec2 gravity; // Gravity vector
+uniform vec2 wind; // Wind vector
+uniform vec2 maxVelocity; // Maximum velocity
+uniform float maxDistance; // Maximum distance
+uniform float mas; // Maximum distance
+uniform float time; // Time
+
+ 
+
+
+layout(std430, binding = 0) buffer InstancePositionBuffer {
+    vec2 instancePosition[]; // Buffer to store instance positions
+};
+
+layout(std430, binding = 1) buffer InstanceVelocityBuffer {
+    vec2 instanceVelocity[]; 
+};
+
+vec2 randomVec2(vec2 st) {
+    st = fract(st * vec2(5.3983, 5.4427));
+    st += dot(st.yx, st.xy + vec2(21.5351, 14.3137));
+    return -1.0 + 2.0 * fract(vec2(st.x * st.y * 0.5821));
+}
+
+void main() {
+    // Calculate global invocation ID
+    uint index = gl_GlobalInvocationID.x;
+    // Update instance velocity
+    instanceVelocity[index] += gravity +randomVec2(vec2(index, time+1));
+    // valculate vector from windpoint to instance position
+    vec2 windVector = wind - instancePosition[index];
+    instanceVelocity[index] -= windVector * 0.001 + randomVec2(vec2(index, time+2));
+    instanceVelocity[index] = min(instanceVelocity[index], maxVelocity);
+    instanceVelocity[index] = max(instanceVelocity[index], -maxVelocity);
+    instancePosition[index] += instanceVelocity[index];
+    
+    if (instancePosition[index].x > maxDistance || instancePosition[index].y > maxDistance || instancePosition[index].x < -maxDistance || instancePosition[index].y < - maxDistance) {
+        instancePosition[index]= randomVec2(vec2(index,time))*10;
+        instanceVelocity[index]= vec2(randomVec2(vec2(index, time) ).x,randomVec2(vec2(time +1, index +1 )).y )*10;
+    }
+}
