@@ -40,6 +40,7 @@ public class EngineWindow : GameWindow
             })
     {
        //ErrorChecker.InitializeGLDebugCallback();
+       Instance = this;
         _controller = new ImGuiController(ClientSize.X, ClientSize.Y);
         this.Resize += e => this.resize();
         GL.Enable(EnableCap.Blend);
